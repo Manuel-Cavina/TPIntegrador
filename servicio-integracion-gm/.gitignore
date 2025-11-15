@@ -1,35 +1,33 @@
-HELP.md
+# Maven
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.class
+*.jar
+*.war
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# IDE
 .vscode/
-.osrm-data/
-.mvn/
+.idea/
+
+# Logs
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+**/db_camiones_data/
+**/db_contenedores_data/
+**/db_solicitudes_data/
+**/db_tarifas_data/
+**/db_tramos_rutas_data/
+**/db_usuarios_data/
+
+# OSRM (NO SUBIR – ARCHIVOS GIGANTES)
+osrm-data/
+*.pbf
+*.osrm
+*.osrm.*
+*.csv
+*.mdb
+*.sqlite
