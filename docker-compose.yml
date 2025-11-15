@@ -1,0 +1,120 @@
+services:
+  db_camiones:
+    image: postgres:15
+    container_name: db_camiones
+    restart: always
+    environment:
+      POSTGRES_DB: db_camiones
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_camiones_data:/var/lib/postgresql/data
+
+  db_contenedores:
+    image: postgres:15
+    container_name: db_contenedores
+    restart: always
+    environment:
+      POSTGRES_DB: db_contenedores
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5434:5432"
+    volumes:
+      - db_contenedores_data:/var/lib/postgresql/data
+
+  db_solicitudes:
+    image: postgres:15
+    container_name: db_solicitudes
+    restart: always
+    environment:
+      POSTGRES_DB: db_solicitudes
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5435:5432"
+    volumes:
+      - db_solicitudes_data:/var/lib/postgresql/data
+
+  db_tarifas:
+    image: postgres:15
+    container_name: db_tarifas
+    restart: always
+    environment:
+      POSTGRES_DB: db_tarifas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5436:5432"
+    volumes:
+      - db_tarifas_data:/var/lib/postgresql/data
+
+  db_tramos_rutas:
+    image: postgres:15
+    container_name: db_tramos_rutas
+    restart: always
+    environment:
+      POSTGRES_DB: db_tramos_rutas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5437:5432"
+    volumes:
+      - db_tramos_rutas_data:/var/lib/postgresql/data
+
+  db_usuarios:
+    image: postgres:15
+    container_name: db_usuarios
+    restart: always
+    environment:
+      POSTGRES_DB: db_usuarios
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5438:5432"
+    volumes:
+      - db_usuarios_data:/var/lib/postgresql/data
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: keycloak
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db_usuarios/logistica
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+
+  # ⭐⭐⭐ AQUI AGREGO OSRM ⭐⭐⭐
+  osrm:
+    image: ghcr.io/project-osrm/osrm-backend:latest
+    container_name: osrm
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./osrm-data:/data   # carpeta local donde va el archivo argentina-latest.osrm
+    command: >
+      osrm-routed /data/argentina-latest.osrm
+    restart: unless-stopped
+  # ⭐⭐⭐ FIN OSRM ⭐⭐⭐
+
+volumes:
+  db_camiones_data:
+  db_contenedores_data:
+  db_solicitudes_data:
+  db_tarifas_data:
+  db_tramos_rutas_data:
+  db_usuarios_data:
+
+  # volumen para OSRM
+  osrm-data:

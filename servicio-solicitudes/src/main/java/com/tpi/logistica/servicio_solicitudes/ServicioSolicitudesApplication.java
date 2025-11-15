@@ -1,0 +1,13 @@
+package com.tpi.logistica.servicio_solicitudes;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ServicioSolicitudesApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ServicioSolicitudesApplication.class, args);
+	}
+
+}

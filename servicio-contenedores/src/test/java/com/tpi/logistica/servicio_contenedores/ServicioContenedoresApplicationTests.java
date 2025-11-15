@@ -1,0 +1,13 @@
+package com.tpi.logistica.servicio_contenedores;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ServicioContenedoresApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
