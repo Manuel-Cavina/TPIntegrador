@@ -1,8 +1,12 @@
 server:
   port: 8087
+
+osrm:
+  host: "http://localhost"
+  port: 5000
+  profile: "driving"
+
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-google:
-  maps:
-    apikey: "AIzaSyBeDXchi-kPzNfWEiN5T_K-4U_wSnGqu0o"

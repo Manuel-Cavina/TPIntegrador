@@ -1,0 +1,29 @@
+# Maven
+target/
+*.jar
+*.war
+*.class
+
+# IntelliJ / VSCode
+.idea/
+.vscode/
+
+# Logs
+*.log
+log/
+logs/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+**/db_camiones_data/
+**/db_contenedores_data/
+**/db_solicitudes_data/
+**/db_tarifas_data/
+**/db_tramos_rutas_data/
+**/db_usuarios_data/
+
+# OSRM data (NO SUBIR 400MB A GITHUB)
+osrm-data/

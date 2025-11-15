@@ -1,48 +1,33 @@
 package com.tpi.logistica.integracion.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tpi.logistica.integracion.dto.DistanciaDTO;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class GeoService {
 
-    @Value("${google.maps.apikey}")
-    private String apiKey;
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    private final RestClient.Builder builder;
+    public double calcularDistancia(double lon1, double lat1, double lon2, double lat2) {
 
-    public GeoService(RestClient.Builder builder) {
-        this.builder = builder;
-    }
+        try {
+            // FORZAMOS PUNTO DECIMAL SIEMPRE (CULTURA US/INGLÉS)
+            String url = String.format(java.util.Locale.US,
+                    "http://localhost:5000/route/v1/driving/%f,%f;%f,%f?overview=false",
+                    lon1, lat1, lon2, lat2
+            );
 
-    public DistanciaDTO calcularDistancia(String origen, String destino) throws Exception {
+            JsonNode json = restTemplate.getForObject(url, JsonNode.class);
 
-        RestClient client = builder.baseUrl("https://maps.googleapis.com/maps/api").build();
+            return json
+                    .get("routes")
+                    .get(0)
+                    .get("distance")
+                    .asDouble();
 
-        String url = "/distancematrix/json?origins=" + origen +
-                     "&destinations=" + destino +
-                     "&units=metric&key=" + apiKey;
-
-        String response = client.get().uri(url).retrieve().body(String.class);
-        System.out.println("====== RESPUESTA GOOGLE ======");
-        System.out.println(response);
-        System.out.println("================================");
-
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(response);
-        JsonNode leg = root.path("rows").get(0).path("elements").get(0);
-        
-        DistanciaDTO dto = new DistanciaDTO();
-        dto.setOrigen(origen);
-        dto.setDestino(destino);
-        dto.setKilometros(leg.path("distance").path("value").asDouble() / 1000);
-        dto.setDuracionTexto(leg.path("duration").path("text").asText());
-
-        return dto;
+        } catch (Exception e) {
+            throw new RuntimeException("Error consultando OSRM: " + e.getMessage(), e);
+        }
     }
 }
