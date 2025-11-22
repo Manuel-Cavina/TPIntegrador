@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 public class UbicacionDTO {
-    private int id;
+    private Integer id;
     private String calle;
-    private int numeracion;
-    private double latitud;
-    private double longitud;
+    private Integer numeracion;
+    private Double latitud;
+    private Double longitud;
 
-    public UbicacionDTO(int id, String calle, int numeracion, double latitud, double longitud) {
+    public UbicacionDTO(Integer id, String calle, Integer numeracion, Double latitud, Double longitud) {
         this.id = id;
         this.calle = calle;
         this.numeracion = numeracion;

@@ -6,12 +6,12 @@ import lombok.Data;
 @Data
 public class RutaDTO {
 
-    private int id;
-    private int solicitudId;
-    private int cantidadTramos;
-    private int cantidadDepositos;
+    private Integer id;
+    private Integer solicitudId;
+    private Integer cantidadTramos;
+    private Integer cantidadDepositos;
 
-    public RutaDTO(int id, int solicitudId, int cantidadTramos, int cantidadDepositos) {
+    public RutaDTO(Integer id, Integer solicitudId, Integer cantidadTramos, Integer cantidadDepositos) {
         this.id = id;
         this.solicitudId = solicitudId;
         this.cantidadTramos = cantidadTramos;

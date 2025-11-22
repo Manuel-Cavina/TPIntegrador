@@ -15,7 +15,7 @@ public class TipoTramo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private  Integer id;
 
     @Column(nullable = false, length = 30)
     private String nombre; // Ej: "origen-depósito", "depósito-destino"

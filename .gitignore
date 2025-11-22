@@ -26,4 +26,5 @@ Thumbs.db
 **/db_usuarios_data/
 
 # OSRM data (NO SUBIR 400MB A GITHUB)
-osrm-data/
+osrm-data/*
+!osrm-data/.gitkeep
