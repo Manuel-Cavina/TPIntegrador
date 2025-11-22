@@ -2,14 +2,15 @@ server:
   port: 8085
 
 spring:
+  application:
+    name: servicio-tramos-rutas
+    
   datasource:
-    url: jdbc:postgresql://localhost:5437/db_tramos_rutas?options=-c%20TimeZone=America/Argentina/Buenos_Aires
+    url: jdbc:postgresql://localhost:5437/db_tramos_rutas?TimeZone=UTC
+
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-    hikari:
-      data-source-properties:
-        options: -c TimeZone=America/Argentina/Buenos_Aires
 
   jpa:
     hibernate:
@@ -18,17 +19,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          time_zone: America/Argentina/Buenos_Aires
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info
-
   endpoint:
     health:
       show-details: always
-
-  application:
-    name: servicio-tramos_rutas

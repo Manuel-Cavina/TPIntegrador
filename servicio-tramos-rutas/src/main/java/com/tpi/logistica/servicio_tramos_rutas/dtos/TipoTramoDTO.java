@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class TipoTramoDTO {
 
-    private int id;
+    private Integer id;
     private String nombre;
 
-    public TipoTramoDTO(int id, String nombre) {
+    public TipoTramoDTO(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }

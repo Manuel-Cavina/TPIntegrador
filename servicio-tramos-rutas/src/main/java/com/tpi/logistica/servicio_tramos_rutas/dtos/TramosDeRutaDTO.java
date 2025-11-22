@@ -7,12 +7,12 @@ import lombok.Data;
 @Data
 public class TramosDeRutaDTO {
 
-    private int id;
-    private int rutaId;
-    private int tramoId;
-    private int orden;
+    private Integer id;
+    private Integer rutaId;
+    private Integer tramoId;
+    private Integer orden;
 
-    public TramosDeRutaDTO(int id, int rutaId, int tramoId, int orden) {
+    public TramosDeRutaDTO(Integer id, Integer rutaId, Integer tramoId, Integer orden) {
         this.id = id;
         this.rutaId = rutaId;
         this.tramoId = tramoId;

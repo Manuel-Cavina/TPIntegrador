@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ServicioTramosRutasApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(ServicioTramosRutasApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        // Fuerza UTC antes de iniciar Spring
+        System.setProperty("user.timezone", "UTC");
+        SpringApplication.run(ServicioTramosRutasApplication.class, args);
+    }
 }

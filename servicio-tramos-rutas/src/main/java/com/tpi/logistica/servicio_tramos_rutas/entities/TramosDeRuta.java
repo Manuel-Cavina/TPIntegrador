@@ -10,14 +10,14 @@ public class TramosDeRuta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "ruta_id", nullable = false)
-    private int rutaId; // FK hacia Ruta
+    private Integer rutaId; // FK hacia Ruta
 
     @Column(name = "tramo_id", nullable = false)
-    private int tramoId; // FK hacia Tramo
+    private Integer tramoId; // FK hacia Tramo
 
     @Column(name = "orden", nullable = false)
-    private int orden; // orden del tramo dentro de la ruta
+    private Integer orden; // orden del tramo dentro de la ruta
 }

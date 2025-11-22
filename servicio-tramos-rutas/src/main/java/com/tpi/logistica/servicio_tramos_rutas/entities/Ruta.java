@@ -10,14 +10,14 @@ public class Ruta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "id_solicitud", nullable = false)
-    private int solicitudId; // FK hacia servicio_solicitudes
+    private Integer solicitudId; // FK hacia servicio_solicitudes
 
     @Column(name = "cantidad_tramos")
-    private int cantidadTramos;
+    private Integer cantidadTramos;
 
     @Column(name = "cantidad_depositos")
-    private int cantidadDepositos;
+    private Integer cantidadDepositos;
 }

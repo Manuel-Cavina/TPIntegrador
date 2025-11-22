@@ -15,7 +15,7 @@ public class Direccion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 20)
     private String tipo; // "origen", "destino" o "depósito"
@@ -26,9 +26,9 @@ public class Direccion {
     @Column(nullable = false)
     private int numeracion;
 
-    @Column(precision = 12, scale = 8)
+    @Column(nullable=false)
     private double latitud;
 
-    @Column(precision = 12, scale = 8)
+    @Column(nullable=false)
     private double longitud;
 }

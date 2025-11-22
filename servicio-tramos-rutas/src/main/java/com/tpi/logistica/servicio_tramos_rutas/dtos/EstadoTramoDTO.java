@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class EstadoTramoDTO {
 
-    private int id;
+    private Integer id;
     private String nombre;
 
-    public EstadoTramoDTO(int id, String nombre) {
+    public EstadoTramoDTO(Integer id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }

@@ -15,24 +15,18 @@ public class Deposito {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(nullable = false, length = 100)
-    private String direccion; // dirección completa textual
+    @Column (name = "id_direccion")
+    private Integer direccionId; 
 
-    @Column(precision = 12, scale = 8)
-    private double latitud;
-
-    @Column(precision = 12, scale = 8)
-    private double longitud;
-
-    @Column(name = "costo_estadia_diaria", precision = 14, scale = 2)
+    @Column(name = "costo_estadia_diaria")
     private double costoEstadiaDiaria;
 
-    @Column(name = "capacidad_maxima", precision = 10, scale = 2)
+    @Column(name = "capacidad_maxima")
     private double capacidadMaxima;
 
     @Column(nullable = false)

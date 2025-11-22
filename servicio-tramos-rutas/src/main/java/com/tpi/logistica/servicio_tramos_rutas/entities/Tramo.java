@@ -12,22 +12,25 @@ public class Tramo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private  Integer id;
 
     @Column(name = "id_direccion_origen", nullable = false)
-    private int direccionOrigenId; // FK hacia Direccion
+    private Integer direccionOrigenId; // FK hacia Direccion
 
     @Column(name = "id_direccion_destino", nullable = false)
-    private int direccionDestinoId; // FK hacia Direccion
+    private Integer direccionDestinoId; // FK hacia Direccion
 
     @Column(name = "id_camion", nullable = false)
-    private int camionId; // FK hacia servicio_camiones
+    private Integer camionId; // FK hacia servicio_camiones
 
     @Column(name = "id_estado", nullable = false)
-    private int estadoId; // FK hacia estado_tramo
+    private Integer estadoId; // FK hacia estado_tramo
 
     @Column(name = "id_tipo", nullable = false)
-    private int tipoId; // FK hacia tipo_tramo
+    private Integer tipoId; // FK hacia tipo_tramo
+
+    @Column(name = "solicitud_id")
+    private Integer solicitudId;
 
     @Column(name = "fecha_hora_inicio")
     private LocalDateTime fechaHoraInicio;
@@ -35,9 +38,9 @@ public class Tramo {
     @Column(name = "fecha_hora_fin")
     private LocalDateTime fechaHoraFin;
 
-    @Column(name = "costo_aprox", precision = 14, scale = 2)
+    @Column(name = "costo_aprox")
     private double costoAprox;
 
-    @Column(name = "costo_real", precision = 14, scale = 2)
+    @Column(name = "costo_real")
     private double costoReal;
 }

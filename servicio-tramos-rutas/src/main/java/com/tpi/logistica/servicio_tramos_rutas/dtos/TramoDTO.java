@@ -1,25 +1,27 @@
 package com.tpi.logistica.servicio_tramos_rutas.dtos;
     
+
 import com.tpi.logistica.servicio_tramos_rutas.entities.Tramo;
 import lombok.Data;
 
 @Data
 public class TramoDTO {
 
-    private int id;
-    private int direccionOrigenId;
-    private int direccionDestinoId;
-    private int camionId;
-    private int estadoId;
-    private int tipoId;
+    private Integer id;
+    private Integer direccionOrigenId;
+    private Integer direccionDestinoId;
+    private Integer camionId;
+    private Integer estadoId;
+    private Integer tipoId;
+    private Integer solicitudId;
     private String fechaHoraInicio;
     private String fechaHoraFin;
     private double costoAprox;
     private double costoReal;
 
-    public TramoDTO(int id, int direccionOrigenId, int direccionDestinoId, int camionId,
-                    int estadoId, int tipoId, String fechaHoraInicio, String fechaHoraFin,
-                    double costoAprox, double costoReal) {
+    public TramoDTO(Integer id, Integer direccionOrigenId, Integer direccionDestinoId, Integer camionId,
+                    Integer estadoId, Integer tipoId, String fechaHoraInicio, String fechaHoraFin,
+                    double costoAprox, double costoReal, Integer solicitudId) {
         this.id = id;
         this.direccionOrigenId = direccionOrigenId;
         this.direccionDestinoId = direccionDestinoId;
@@ -30,6 +32,7 @@ public class TramoDTO {
         this.fechaHoraFin = fechaHoraFin;
         this.costoAprox = costoAprox;
         this.costoReal = costoReal;
+        this.solicitudId = solicitudId;
     }
 
     public static TramoDTO toDto(Tramo t) {
@@ -43,7 +46,8 @@ public class TramoDTO {
                 t.getFechaHoraInicio() != null ? t.getFechaHoraInicio().toString() : null,
                 t.getFechaHoraFin() != null ? t.getFechaHoraFin().toString() : null,
                 t.getCostoAprox(),
-                t.getCostoReal()
+                t.getCostoReal(),
+                t.getSolicitudId()
         );
     }
 }
