@@ -12,6 +12,17 @@ services:
       - "5433:5432"
     volumes:
       - db_camiones_data:/var/lib/postgresql/data
+  servicio-camiones:
+    build: ./servicio-camiones
+    container_name: servicio-camiones
+    depends_on:
+      - db_camiones
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_camiones:5432/db_camiones
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
 
   db_contenedores:
     image: postgres:15
