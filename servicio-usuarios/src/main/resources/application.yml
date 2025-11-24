@@ -2,6 +2,11 @@ server:
   port: 8086
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/logistica
   datasource:
     url: jdbc:postgresql://localhost:5438/db_usuarios?options=-c%20TimeZone=America/Argentina/Buenos_Aires
     username: postgres

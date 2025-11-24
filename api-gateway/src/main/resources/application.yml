@@ -9,8 +9,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          # Keycloak (pendiente instalar, pero necesario para que arranque)
-          issuer-uri: http://localhost:8080/realms/logistica
+          issuer-uri: http://keycloak:8080/realms/logistica
 
   cloud:
     gateway:
@@ -18,79 +17,68 @@ spring:
         - AddRequestHeader=X-Requested-From, ApiGateway
 
       routes:
-
-        # ----------- 🚛 Microservicio Camiones -----------
         - id: camiones
-          uri: ${logistica-gateway.url-camiones}
+          uri: ${logisticaGateway.urlCamiones}
           predicates:
             - Path=/api/v1/camiones/**
           filters:
             - AddRequestHeader=X-Internal-Token, ${internal.token}
 
-        # ----------- 📦 Microservicio Contenedores -----------
         - id: contenedores
-          uri: ${logistica-gateway.url-contenedores}
+          uri: ${logisticaGateway.urlContenedores}
           predicates:
             - Path=/api/v1/contenedores/**
           filters:
             - AddRequestHeader=X-Internal-Token, ${internal.token}
 
-        # ----------- 📝 Microservicio Solicitudes -----------
         - id: solicitudes
-          uri: ${logistica-gateway.url-solicitudes}
+          uri: ${logisticaGateway.urlSolicitudes}
           predicates:
             - Path=/api/v1/solicitudes/**
           filters:
             - AddRequestHeader=X-Internal-Token, ${internal.token}
 
-        # ----------- 💰 Microservicio Tarifas -----------
         - id: tarifas
-          uri: ${logistica-gateway.url-tarifas}
+          uri: ${logisticaGateway.urlTarifas}
           predicates:
             - Path=/api/v1/tarifas/**
           filters:
             - AddRequestHeader=X-Internal-Token, ${internal.token}
 
-        # ----------- 🗺 Microservicio Rutas y Tramos -----------
         - id: rutas
-          uri: ${logistica-gateway.url-rutas}
+          uri: ${logisticaGateway.urlRutas}
           predicates:
-            - Path=/api/v1/rutas/**, /api/v1/tramos/**
+            - Path=/api/v1/rutas/**
+            - Path=/api/v1/tramos/**
           filters:
             - AddRequestHeader=X-Internal-Token, ${internal.token}
 
-        # ----------- 👥 Microservicio Usuarios -----------
         - id: usuarios
-          uri: ${logistica-gateway.url-usuarios}
+          uri: ${logisticaGateway.urlUsuarios}
           predicates:
             - Path=/api/v1/usuarios/**
           filters:
             - AddRequestHeader=X-Internal-Token, ${internal.token}
 
-        # ----------- 🌍 Integración Google Maps -----------
         - id: maps
-          uri: ${logistica-gateway.url-maps}
+          uri: ${logisticaGateway.urlMaps}
           predicates:
             - Path=/api/v1/maps/**
           filters:
             - AddRequestHeader=X-Internal-Token, ${internal.token}
 
+logisticaGateway:
+  urlCamiones: ${LOGISTICA_GATEWAY_URL_CAMIONES:http://localhost:8081}
+  urlContenedores: ${LOGISTICA_GATEWAY_URL_CONTENEDORES:http://localhost:8082}
+  urlSolicitudes: ${LOGISTICA_GATEWAY_URL_SOLICITUDES:http://localhost:8083}
+  urlTarifas: ${LOGISTICA_GATEWAY_URL_TARIFAS:http://localhost:8084}
+  urlRutas: ${LOGISTICA_GATEWAY_URL_RUTAS:http://localhost:8085}
+  urlUsuarios: ${LOGISTICA_GATEWAY_URL_USUARIOS:http://localhost:8086}
+  urlMaps: ${LOGISTICA_GATEWAY_URL_MAPS:http://localhost:8087}
 
-# ----------- URLs DE LOS MICROSERVICIOS (CENTRALIZADAS) -----------
-logistica-gateway:
-  url-camiones: http://localhost:8081
-  url-contenedores: http://localhost:8082
-  url-solicitudes: http://localhost:8083
-  url-tarifas: http://localhost:8084
-  url-rutas: http://localhost:8085
-  url-usuarios: http://localhost:8086
-  url-maps: http://localhost:8087
-
-# ----------- TOKEN INTERNO ENTRE MICROSERVICIOS -----------
 internal:
   token: SUPER_SECRET_TOKEN
 
-# ----------- LOGGING DEL GATEWAY -----------
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

@@ -1,4 +1,51 @@
 services:
+  ##Keycloak
+  db_keycloak:
+    image: postgres:15
+    container_name: db_keycloak
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    ports:
+      - "5439:5432"
+    volumes:
+      - db_keycloak_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U keycloak"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: keycloak
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db_keycloak/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_PROXY_HEADERS: xforwarded
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_URL: http://localhost:8091
+      KC_HOSTNAME_ADMIN_URL: http://localhost:8091
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/.keycloak_started || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    ports:
+      - "8091:8080"
+    depends_on:
+      db_keycloak:
+        condition: service_healthy
+
+  ##Bases de datos
   db_camiones:
     image: postgres:15
     container_name: db_camiones
@@ -7,7 +54,6 @@ services:
       POSTGRES_DB: db_camiones
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      TZ: America/Argentina/Buenos_Aires
     ports:
       - "5433:5432"
     volumes:
@@ -21,7 +67,6 @@ services:
       POSTGRES_DB: db_contenedores
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      TZ: America/Argentina/Buenos_Aires
     ports:
       - "5434:5432"
     volumes:
@@ -35,7 +80,6 @@ services:
       POSTGRES_DB: db_solicitudes
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      TZ: America/Argentina/Buenos_Aires
     ports:
       - "5435:5432"
     volumes:
@@ -49,7 +93,6 @@ services:
       POSTGRES_DB: db_tarifas
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      TZ: America/Argentina/Buenos_Aires
     ports:
       - "5436:5432"
     volumes:
@@ -63,7 +106,6 @@ services:
       POSTGRES_DB: db_tramos_rutas
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      TZ: America/Argentina/Buenos_Aires
     ports:
       - "5437:5432"
     volumes:
@@ -77,37 +119,155 @@ services:
       POSTGRES_DB: db_usuarios
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      TZ: America/Argentina/Buenos_Aires
     ports:
       - "5438:5432"
     volumes:
       - db_usuarios_data:/var/lib/postgresql/data
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:25.0
-    container_name: keycloak
-    command: start-dev
-    environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://db_usuarios/logistica
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: postgres
-    ports:
-      - "8080:8080"
-
-  # ⭐⭐⭐ AQUI AGREGO OSRM ⭐⭐⭐
+  ##OSRM
   osrm:
     image: ghcr.io/project-osrm/osrm-backend:latest
     container_name: osrm
     ports:
       - "5000:5000"
     volumes:
-      - ./osrm-data:/data   # carpeta local donde va el archivo argentina-latest.osrm
+      - ./osrm-data:/data
     command: >
       osrm-routed /data/argentina-latest.osrm
     restart: unless-stopped
-  # ⭐⭐⭐ FIN OSRM ⭐⭐⭐
 
+  ##MSs
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      LOGISTICA_GATEWAY_URL_CAMIONES: http://servicio-camiones:8081
+      LOGISTICA_GATEWAY_URL_CONTENEDORES: http://servicio-contenedores:8082
+      LOGISTICA_GATEWAY_URL_SOLICITUDES: http://servicio-solicitudes:8083
+      LOGISTICA_GATEWAY_URL_TARIFAS: http://servicio-tarifas:8084
+      LOGISTICA_GATEWAY_URL_RUTAS: http://servicio-tramos-rutas:8085
+      LOGISTICA_GATEWAY_URL_USUARIOS: http://servicio-usuarios:8086
+      LOGISTICA_GATEWAY_URL_MAPS: http://servicio-integracion-gm:8087
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak:8091/realms/logistica
+    depends_on:
+      keycloak:
+        condition: service_started
+      servicio-solicitudes:
+        condition: service_started
+      servicio-tramos-rutas:
+        condition: service_started
+      servicio-tarifas:
+        condition: service_started
+      servicio-contenedores:
+        condition: service_started
+      servicio-usuarios:
+        condition: service_started
+      servicio-camiones:
+        condition: service_started
+      servicio-integracion-gm:
+        condition: service_started
+    restart: unless-stopped
+
+  servicio-solicitudes:
+    build:
+      context: ./servicio-solicitudes
+      dockerfile: Dockerfile
+    container_name: servicio-solicitudes
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_solicitudes:5432/db_solicitudes
+    depends_on:
+      - db_solicitudes
+      - keycloak
+    restart: unless-stopped
+
+  servicio-tramos-rutas:
+    build:
+      context: ./servicio-tramos-rutas
+      dockerfile: Dockerfile
+    container_name: servicio-tramos-rutas
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_tramos_rutas:5432/db_tramos_rutas
+      OSRM_BASE_URL: http://osrm:5000
+    depends_on:
+      - db_tramos_rutas
+      - osrm
+      - keycloak
+    restart: unless-stopped
+
+  servicio-tarifas:
+    build:
+      context: ./servicio-tarifas
+      dockerfile: Dockerfile
+    container_name: servicio-tarifas
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_tarifas:5432/db_tarifas
+    depends_on:
+      - db_tarifas
+      - keycloak
+    restart: unless-stopped
+
+  servicio-contenedores:
+    build:
+      context: ./servicio-contenedores
+      dockerfile: Dockerfile
+    container_name: servicio-contenedores
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_contenedores:5432/db_contenedores
+    depends_on:
+      - db_contenedores
+      - keycloak
+    restart: unless-stopped
+
+  servicio-usuarios:
+    build:
+      context: ./servicio-usuarios
+      dockerfile: Dockerfile
+    container_name: servicio-usuarios
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_usuarios:5432/db_usuarios
+    depends_on:
+      - db_usuarios
+      - keycloak
+    restart: unless-stopped
+
+  servicio-camiones:
+    build:
+      context: ./servicio-camiones
+      dockerfile: Dockerfile
+    container_name: servicio-camiones
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_camiones:5432/db_camiones
+    depends_on:
+      - db_camiones
+      - keycloak
+    restart: unless-stopped
+
+  servicio-integracion-gm:
+    build:
+      context: ./servicio-integracion-gm
+      dockerfile: Dockerfile
+    container_name: servicio-integracion-gm
+    ports:
+      - "8087:8087"
+    restart: unless-stopped
+
+## volumenes
 volumes:
   db_camiones_data:
   db_contenedores_data:
@@ -115,6 +275,5 @@ volumes:
   db_tarifas_data:
   db_tramos_rutas_data:
   db_usuarios_data:
-
-  # volumen para OSRM
+  db_keycloak_data:
   osrm-data:

@@ -15,4 +15,12 @@ public class CamionController {
         respuesta.put("mensaje", "Servicio Camiones operativo");
         return respuesta;
     }
+
+    @GetMapping("/api/v1/camiones/")
+    public Map<String, String> listCamiones() {
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("status", "success");
+        respuesta.put("mensaje", "Listado de camiones");
+        return respuesta;
+    }
 }

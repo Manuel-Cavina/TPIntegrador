@@ -10,7 +10,11 @@ spring:
     hikari:
       data-source-properties:
         options: -c TimeZone=America/Argentina/Buenos_Aires
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/logistica
   jpa:
     hibernate:
       ddl-auto: update

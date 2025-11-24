@@ -2,9 +2,14 @@ server:
   port: 8085
 
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/realms/logistica
   application:
     name: servicio-tramos-rutas
-    
+
   datasource:
     url: jdbc:postgresql://localhost:5437/db_tramos_rutas?TimeZone=UTC
 
