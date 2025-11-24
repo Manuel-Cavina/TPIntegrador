@@ -18,10 +18,10 @@ public class Ubicacion {
     @Column(nullable = false)
     private int numeracion;
 
-    @Column(nullable = false, precision = 12, scale = 8)
+    @Column(nullable = false)
     private double latitud;
 
-    @Column(nullable = false, precision = 12, scale = 8)
+    @Column(nullable = false)
     private double longitud;
 }
 
