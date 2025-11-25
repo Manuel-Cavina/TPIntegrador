@@ -67,6 +67,17 @@ services:
       - "5435:5432"
     volumes:
       - db_solicitudes_data:/var/lib/postgresql/data
+  servicio-solicitudes:
+    build: ./servicio-solicitudes
+    container_name: servicio-solicitudes
+    depends_on:
+      - db_solicitudes
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_solicitudes:5432/db_solicitudes?options=-c%20TimeZone=America/Argentina/Buenos_Aires
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
 
   # ------------------------ TARIFAS ------------------------
   db_tarifas:
