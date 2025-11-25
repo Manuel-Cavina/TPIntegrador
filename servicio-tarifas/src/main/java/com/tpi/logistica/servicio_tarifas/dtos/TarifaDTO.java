@@ -1,7 +1,6 @@
 package com.tpi.logistica.servicio_tarifas.dtos;
 
 import com.tpi.logistica.servicio_tarifas.entities.Tarifa;
-
 import lombok.Data;
 
 @Data
@@ -18,21 +17,10 @@ public class TarifaDTO {
     private String fechaInicio;
     private String fechaFin;
 
-    public TarifaDTO(int id, String tipo, String descripcion, double costoBase, double costoPorKm,
-                     double costoPorKg, double costoPorVolumen, boolean activa,
-                     String fechaInicio, String fechaFin) {
-        this.id = id;
-        this.tipo = tipo;
-        this.descripcion = descripcion;
-        this.costoBase = costoBase;
-        this.costoPorKm = costoPorKm;
-        this.costoPorKg = costoPorKg;
-        this.costoPorVolumen = costoPorVolumen;
-        this.activa = activa;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
+    public TarifaDTO(int id, String tipo, String descripcion, double costoBase, double costoPorKm, double costoPorKg, double costoPorVolumen, boolean activa, String s, String s1) {
     }
 
+    // TarifaDTO.toDto — reemplazá por esta versión
     public static TarifaDTO toDto(Tarifa t) {
         return new TarifaDTO(
                 t.getId(),
@@ -44,7 +32,8 @@ public class TarifaDTO {
                 t.getCostoPorVolumen(),
                 t.isActiva(),
                 t.getFechaInicio() != null ? t.getFechaInicio().toString() : null,
-                t.getFechaFin() != null ? t.getFechaFin().toString() : null
+                t.getFechaFin()    != null ? t.getFechaFin().toString()    : null
         );
     }
+
 }

@@ -1,13 +1,7 @@
 package com.tpi.logistica.servicio_tarifas.entities;
 
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -19,25 +13,17 @@ public class Cotizacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "solicitud_id", nullable = false)
-    private int solicitudId; // FK hacia el microservicio de solicitudes
+    @Column(nullable = false)
+    private int solicitudId;
 
-    @Column(name = "tipo_calculo", nullable = false, length = 20)
-    private String tipoCalculo; // "ESTIMADO" o "REAL"
+    @Column(nullable = false, length = 20)
+    private String tipoCalculo;
 
-    @Column(name = "distancia_km", precision = 14, scale = 2)
     private double distanciaKm;
-
-    @Column(name = "peso_kg", precision = 14, scale = 2)
     private double pesoKg;
-
-    @Column(name = "volumen_m3", precision = 14, scale = 2)
     private double volumenM3;
-
-    @Column(name = "costo_total", precision = 14, scale = 2)
     private double costoTotal;
 
-    @Column(name = "fecha_calculo", nullable = false)
+    @Column(nullable = false)
     private LocalDateTime fechaCalculo = LocalDateTime.now();
 }
-

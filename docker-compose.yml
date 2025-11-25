@@ -82,6 +82,18 @@ services:
       - "5436:5432"
     volumes:
       - db_tarifas_data:/var/lib/postgresql/data
+  servicio-tarifas:
+    build: ./servicio-tarifas
+    container_name: servicio-tarifas
+    depends_on:
+      - db_tarifas
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_tarifas:5432/db_tarifas
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
 
   # ------------------------ TRAMOS / RUTAS ------------------------
   db_tramos_rutas:

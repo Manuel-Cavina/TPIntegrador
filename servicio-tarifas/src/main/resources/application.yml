@@ -1,9 +1,9 @@
 server:
-  port: 8084
+  port: 8081
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5436/db_tarifas?options=-c%20TimeZone=America/Argentina/Buenos_Aires
+    url: jdbc:postgresql://localhost:5432/db_tarifas?options=-c%20TimeZone=America/Argentina/Buenos_Aires
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
