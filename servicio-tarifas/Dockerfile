@@ -1,19 +1,18 @@
-# ---------- build ----------
-FROM maven:3.9.9-eclipse-temurin-21 AS build
+FROM maven:3.9.9-eclipse-temurin-17 AS build
+
 WORKDIR /app
+
 COPY pom.xml .
-RUN mvn -q -DskipTests dependency:go-offline
+RUN mvn -q dependency:go-offline
+
 COPY src ./src
 RUN mvn -q -DskipTests package
 
-# ---------- runtime ----------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:17-jre
 WORKDIR /app
-COPY --from=build /app/target/servicio-tarifas-*.jar app.jar
 
-# Puerto interno del servicio
-EXPOSE 8081
+COPY --from=build /app/target/servicio-tarifas-0.0.1-SNAPSHOT.jar app.jar
 
-# Permite overridear configuración via env (SPRING_* y SERVER_PORT)
-ENV JAVA_OPTS=""
-ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar /app/app.jar"]
+EXPOSE 8084
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

@@ -1,34 +1,36 @@
 package com.tpi.logistica.servicio_tarifas.entities;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tarifas")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tarifa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @Column(nullable = false, length = 50)
     private String tipo;
 
-    @Column(length = 255)
     private String descripcion;
 
     private double costoBase;
+
     private double costoPorKm;
+
     private double costoPorKg;
+
     private double costoPorVolumen;
 
-    @Column(nullable = false)
-    private boolean activa = true;
+    private boolean activa;
 
-    @Column(nullable = false)
-    private LocalDateTime fechaInicio = LocalDateTime.now();
+    private LocalDateTime fechaInicio;
 
     private LocalDateTime fechaFin;
 }

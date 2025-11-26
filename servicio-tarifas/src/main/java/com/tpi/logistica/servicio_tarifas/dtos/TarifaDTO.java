@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class TarifaDTO {
 
-    private int id;
+    private Integer id;
     private String tipo;
     private String descripcion;
     private double costoBase;
@@ -17,23 +17,18 @@ public class TarifaDTO {
     private String fechaInicio;
     private String fechaFin;
 
-    public TarifaDTO(int id, String tipo, String descripcion, double costoBase, double costoPorKm, double costoPorKg, double costoPorVolumen, boolean activa, String s, String s1) {
-    }
-
-    // TarifaDTO.toDto — reemplazá por esta versión
     public static TarifaDTO toDto(Tarifa t) {
-        return new TarifaDTO(
-                t.getId(),
-                t.getTipo(),
-                t.getDescripcion(),
-                t.getCostoBase(),
-                t.getCostoPorKm(),
-                t.getCostoPorKg(),
-                t.getCostoPorVolumen(),
-                t.isActiva(),
-                t.getFechaInicio() != null ? t.getFechaInicio().toString() : null,
-                t.getFechaFin()    != null ? t.getFechaFin().toString()    : null
-        );
+        TarifaDTO dto = new TarifaDTO();
+        dto.setId(t.getId());
+        dto.setTipo(t.getTipo());
+        dto.setDescripcion(t.getDescripcion());
+        dto.setCostoBase(t.getCostoBase());
+        dto.setCostoPorKm(t.getCostoPorKm());
+        dto.setCostoPorKg(t.getCostoPorKg());
+        dto.setCostoPorVolumen(t.getCostoPorVolumen());
+        dto.setActiva(t.isActiva());
+        dto.setFechaInicio(t.getFechaInicio() == null ? null : t.getFechaInicio().toString());
+        dto.setFechaFin(t.getFechaFin() == null ? null : t.getFechaFin().toString());
+        return dto;
     }
-
 }
