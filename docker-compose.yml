@@ -1,4 +1,11 @@
+version: "3.9"
+
 services:
+
+  # ======================
+  # BASES DE DATOS
+  # ======================
+
   db_camiones:
     image: postgres:15
     container_name: db_camiones
@@ -63,9 +70,9 @@ services:
       POSTGRES_DB: db_tramos_rutas
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      TZ: America/Argentina/Buenos_Aires
+      TZ: UTC
     ports:
-      - "5437:5432"
+      - "5439:5432"
     volumes:
       - db_tramos_rutas_data:/var/lib/postgresql/data
 
@@ -83,30 +90,42 @@ services:
     volumes:
       - db_usuarios_data:/var/lib/postgresql/data
 
+  # ======================
+  # AUTENTICACIÓN
+  # ======================
+
   keycloak:
     image: quay.io/keycloak/keycloak:25.0
     container_name: keycloak
     command: start-dev
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://db_usuarios/logistica
+      KC_DB_URL: jdbc:postgresql://db_usuarios/db_usuarios
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: postgres
     ports:
       - "8080:8080"
+    depends_on:
+      - db_usuarios
 
-  # ⭐⭐⭐ AQUI AGREGO OSRM ⭐⭐⭐
+  # ======================
+  # OSRM (MAPAS Y RUTEO)
+  # ======================
+
   osrm:
     image: ghcr.io/project-osrm/osrm-backend:latest
     container_name: osrm
     ports:
       - "5000:5000"
     volumes:
-      - ./osrm-data:/data   # carpeta local donde va el archivo argentina-latest.osrm
+      - ./osrm-data:/data
     command: >
       osrm-routed /data/argentina-latest.osrm
     restart: unless-stopped
-  # ⭐⭐⭐ FIN OSRM ⭐⭐⭐
+
+# ======================
+# VOLUMENES
+# ======================
 
 volumes:
   db_camiones_data:
@@ -115,6 +134,4 @@ volumes:
   db_tarifas_data:
   db_tramos_rutas_data:
   db_usuarios_data:
-
-  # volumen para OSRM
   osrm-data:

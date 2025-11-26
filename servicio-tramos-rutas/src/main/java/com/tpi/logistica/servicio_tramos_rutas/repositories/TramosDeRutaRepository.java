@@ -8,4 +8,5 @@ import com.tpi.logistica.servicio_tramos_rutas.entities.TramosDeRuta;
 
 public interface TramosDeRutaRepository extends JpaRepository<TramosDeRuta, Integer> {
     List<TramosDeRuta> findByRutaIdOrderByOrden(Integer rutaId);
+    void deleteByRutaId(Integer rutaId);
 }

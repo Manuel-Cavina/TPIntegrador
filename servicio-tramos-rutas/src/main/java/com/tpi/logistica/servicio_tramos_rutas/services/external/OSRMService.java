@@ -1,12 +1,13 @@
-package com.tpi.logistica.servicio_tramos_rutas.services;
-
-import com.tpi.logistica.servicio_tramos_rutas.dtos.RutaOSRMResponse;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+package com.tpi.logistica.servicio_tramos_rutas.services.external;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.tpi.logistica.servicio_tramos_rutas.dtos.RutaOSRMResponse;
 
 @Service
 public class OSRMService {
