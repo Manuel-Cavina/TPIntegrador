@@ -1,37 +1,26 @@
 package com.tpi.logistica.servicio_tramos_rutas.controller;
 
-import com.tpi.logistica.servicio_tramos_rutas.entities.Tramo;
-import com.tpi.logistica.servicio_tramos_rutas.repositories.TramoRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.tpi.logistica.servicio_tramos_rutas.dtos.RutaAsignarRequest;
+import com.tpi.logistica.servicio_tramos_rutas.dtos.RutaResponse;
+import com.tpi.logistica.servicio_tramos_rutas.services.RutaService;
 
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/rutas")
 @RequiredArgsConstructor
 public class RutaController {
 
-    private final TramoRepository tramoRepo;
+    private final RutaService rutaService;
 
-    // Guarda los tramos reales asignados a una solicitud
-    @PostMapping("/guardar")
-    public ResponseEntity<?> guardarRuta(@RequestBody List<Tramo> tramos) {
-
-        for (Tramo t : tramos) {
-            t.setEstadoId(1);          // pendiente
-            tramoRepo.save(t);
-        }
-
-        return ResponseEntity.ok("Ruta guardada correctamente.");
-    }
-
-    // obtener todos los tramos de una solicitud
-    @GetMapping("/{solicitudId}")
-    public ResponseEntity<?> obtenerPorSolicitud(@PathVariable Integer solicitudId) {
-        return ResponseEntity.ok(tramoRepo.findBySolicitudId(solicitudId));
+    @PostMapping("/asignar")
+    public ResponseEntity<RutaResponse> asignarRuta(@RequestBody RutaAsignarRequest request) {
+        return ResponseEntity.ok(rutaService.asignarRuta(request));
     }
 }
