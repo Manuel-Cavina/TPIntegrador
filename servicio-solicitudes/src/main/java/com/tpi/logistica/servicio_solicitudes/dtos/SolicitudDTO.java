@@ -1,8 +1,6 @@
 package com.tpi.logistica.servicio_solicitudes.dtos;
 
-
 import com.tpi.logistica.servicio_solicitudes.entities.Solicitud;
-
 import lombok.Data;
 
 @Data
