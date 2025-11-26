@@ -20,6 +20,19 @@ services:
     volumes:
       - db_camiones_data:/var/lib/postgresql/data
 
+  servicio-camiones:
+    build: ./servicio-camiones
+    container_name: servicio-camiones
+    depends_on:
+      - db_camiones
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_camiones:5432/db_camiones
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  # ------------------------ CONTENEDORES ------------------------
   db_contenedores:
     image: postgres:15
     container_name: db_contenedores
@@ -34,6 +47,19 @@ services:
     volumes:
       - db_contenedores_data:/var/lib/postgresql/data
 
+  servicio-contenedores:
+    build: ./servicio-contenedores
+    container_name: servicio-contenedores
+    depends_on:
+      - db_contenedores
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db_contenedores:5432/db_contenedores
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  # ------------------------ SOLICITUDES ------------------------
   db_solicitudes:
     image: postgres:15
     container_name: db_solicitudes
@@ -48,6 +74,7 @@ services:
     volumes:
       - db_solicitudes_data:/var/lib/postgresql/data
 
+  # ------------------------ TARIFAS ------------------------
   db_tarifas:
     image: postgres:15
     container_name: db_tarifas
@@ -62,6 +89,7 @@ services:
     volumes:
       - db_tarifas_data:/var/lib/postgresql/data
 
+  # ------------------------ TRAMOS / RUTAS ------------------------
   db_tramos_rutas:
     image: postgres:15
     container_name: db_tramos_rutas
@@ -76,6 +104,7 @@ services:
     volumes:
       - db_tramos_rutas_data:/var/lib/postgresql/data
 
+  # ------------------------ USUARIOS ------------------------
   db_usuarios:
     image: postgres:15
     container_name: db_usuarios
@@ -100,7 +129,7 @@ services:
     command: start-dev
     environment:
       KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://db_usuarios/db_usuarios
+      KC_DB_URL: jdbc:postgresql://db_usuarios:5432/db_usuarios
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: postgres
     ports:
@@ -112,6 +141,7 @@ services:
   # OSRM (MAPAS Y RUTEO)
   # ======================
 
+  # ------------------------ OSRM ------------------------
   osrm:
     image: ghcr.io/project-osrm/osrm-backend:latest
     container_name: osrm
@@ -127,6 +157,7 @@ services:
 # VOLUMENES
 # ======================
 
+# ------------------------ VOLUMES ------------------------
 volumes:
   db_camiones_data:
   db_contenedores_data:
