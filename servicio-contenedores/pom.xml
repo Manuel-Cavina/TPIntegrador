@@ -30,6 +30,8 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+
+
         <!-- Actuator para monitoreo -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -2,11 +2,13 @@ server:
   port: 8082
 
 spring:
+  application:
+    name: servicio-contenedores
+
   datasource:
-    url: jdbc:postgresql://localhost:5434/db_contenedores?options=-c%20TimeZone=America/Argentina/Buenos_Aires
+    url: jdbc:postgresql://localhost:5432/db_contenedores
     username: postgres
     password: postgres
-    driver-class-name: org.postgresql.Driver
     hikari:
       data-source-properties:
         options: -c TimeZone=America/Argentina/Buenos_Aires
@@ -21,18 +23,20 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           time_zone: America/Argentina/Buenos_Aires
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info
-
   endpoint:
     health:
       show-details: always
-
-  application:
-    name: servicio-contenedores

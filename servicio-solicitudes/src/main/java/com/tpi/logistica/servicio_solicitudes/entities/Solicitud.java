@@ -27,15 +27,15 @@ public class Solicitud {
 
     @Column(name = "id_cliente", nullable = false)
     private int clienteId;
-
-    @Column(name = "costo_estimado", precision = 14, scale = 2)
+    
+    @Column(name = "costo_estimado")
     private double costoEstimado;
+
+    @Column(name = "costo_final")
+    private double costoFinal;
 
     @Column(name = "tiempo_estimado")
     private LocalDateTime tiempoEstimado;
-
-    @Column(name = "costo_final", precision = 14, scale = 2)
-    private double costoFinal;
 
     @Column(name = "tiempo_real")
     private LocalDateTime tiempoReal;

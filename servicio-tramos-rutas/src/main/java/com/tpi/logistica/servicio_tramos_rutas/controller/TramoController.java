@@ -1,6 +1,7 @@
 package com.tpi.logistica.servicio_tramos_rutas.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,52 +22,67 @@ public class TramoController {
 
     private final TramoRepository tramoRepo;
 
-    // TRANSPORTISTA INICIA TRAMO
+    // ============================================================
+    // 1) LISTAR TODOS LOS TRAMOS
+    // ============================================================
+    @GetMapping
+    public ResponseEntity<List<Tramo>> listarTodos() {
+        return ResponseEntity.ok(tramoRepo.findAll());
+    }
+
+    // ============================================================
+    // 2) OBTENER TRAMO POR ID
+    // ============================================================
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPorId(@PathVariable Integer id) {
+        return tramoRepo.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // ============================================================
+    // 3) LISTAR TRAMOS POR SOLICITUD
+    // ============================================================
+    @GetMapping("/solicitud/{solicitudId}")
+    public ResponseEntity<List<Tramo>> obtenerPorSolicitud(
+            @PathVariable Integer solicitudId) {
+
+        return ResponseEntity.ok(tramoRepo.findBySolicitudId(solicitudId));
+    }
+
+    // ============================================================
+    // 4) INICIAR TRAMO (SET FECHA REAL DE INICIO)
+    // ============================================================
     @PutMapping("/{id}/iniciar")
-    public ResponseEntity<?> iniciar(@PathVariable Integer id) {
-        Tramo t = tramoRepo.findById(id).orElse(null);
+    public ResponseEntity<?> iniciarTramo(@PathVariable Integer id) {
 
-        if (t == null)
-            return ResponseEntity.badRequest().body("Tramo no encontrado");
+        Tramo tramo = tramoRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tramo no encontrado"));
 
-        t.setEstadoId(2); // EN CURSO
-        t.setFechaHoraInicio(LocalDateTime.now());
-        tramoRepo.save(t);
+        tramo.setFechaHoraInicio(LocalDateTime.now());
+        tramo.setEstadoId(2); // EN CURSO
+
+        tramoRepo.save(tramo);
 
         return ResponseEntity.ok("Tramo iniciado correctamente");
     }
 
-    // TRANSPORTISTA FINALIZA TRAMO
+    // ============================================================
+    // 5) FINALIZAR TRAMO (SET FECHA REAL DE FIN)
+    // ============================================================
     @PutMapping("/{id}/finalizar")
-    public ResponseEntity<?> finalizar(@PathVariable Integer id) {
-        Tramo t = tramoRepo.findById(id).orElse(null);
+    public ResponseEntity<?> finalizarTramo(@PathVariable Integer id) {
 
-        if (t == null)
-            return ResponseEntity.badRequest().body("Tramo no encontrado");
+        Tramo tramo = tramoRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tramo no encontrado"));
 
-        t.setEstadoId(3); // FINALIZADO
-        t.setFechaHoraFin(LocalDateTime.now());
-        tramoRepo.save(t);
+        tramo.setFechaHoraFin(LocalDateTime.now());
+        tramo.setEstadoId(3); // FINALIZADO
+
+        tramoRepo.save(tramo);
 
         return ResponseEntity.ok("Tramo finalizado correctamente");
     }
 
-    // TRAMOS PENDIENTES
-@GetMapping("/pendientes")
-public ResponseEntity<?> pendientes() {
-    return ResponseEntity.ok(tramoRepo.findByEstadoId(1));
-}
-
-// TRAMOS EN CURSO
-@GetMapping("/en-curso")
-public ResponseEntity<?> enCurso() {
-    return ResponseEntity.ok(tramoRepo.findByEstadoId(2));
-}
-
-// TRAMOS FINALIZADOS
-@GetMapping("/finalizados")
-public ResponseEntity<?> finalizados() {
-    return ResponseEntity.ok(tramoRepo.findByEstadoId(3));
-}
     
 }

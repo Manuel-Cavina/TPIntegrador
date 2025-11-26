@@ -1,19 +1,50 @@
 package com.tpi.logistica.servicio_contenedores.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.tpi.logistica.servicio_contenedores.dtos.ContenedorDTO;
+import com.tpi.logistica.servicio_contenedores.dtos.EstadoContenedorDTO;
+import com.tpi.logistica.servicio_contenedores.service.ContenedorService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/contenedores")
 public class ContenedorController {
 
-    @GetMapping("/ping")
-    public Map<String, String> ping() {
-        Map<String, String> respuesta = new HashMap<>();
-        respuesta.put("status", "OK");
-        respuesta.put("mensaje", "Servicio Camiones operativo");
-        return respuesta;
+    private final ContenedorService service;
+
+    public ContenedorController(ContenedorService service) {
+        this.service = service;
     }
+
+    @GetMapping("/ping")
+    public String ping() { return "Servicio Contenedores operativo"; }
+
+    @PostMapping
+    public ContenedorDTO crear(@RequestBody ContenedorDTO req) {
+        return service.crear(req);
+    }
+
+    @GetMapping
+    public Page<ContenedorDTO> listar(@RequestParam(required = false) Integer estadoId,
+                                      @RequestParam(required = false) Integer clienteId,
+                                      Pageable pageable) {
+        return service.listar(estadoId, clienteId, pageable);
+    }
+
+    @GetMapping("/{id}")
+    public ContenedorDTO obtener(@PathVariable int id) { return service.obtener(id); }
+
+    @PutMapping("/{id}")
+    public ContenedorDTO actualizar(@PathVariable int id, @RequestBody ContenedorDTO req) {
+        return service.actualizar(id, req);
+    }
+
+    @PatchMapping("/{id}/estado")
+    public ContenedorDTO cambiarEstado(@PathVariable int id, @RequestBody EstadoContenedorDTO req) {
+        return service.cambiarEstado(id, req);
+    }
+
+    @DeleteMapping("/{id}")
+    public void eliminar(@PathVariable int id) { service.eliminar(id); }
 }

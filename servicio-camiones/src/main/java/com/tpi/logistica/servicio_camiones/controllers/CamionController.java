@@ -1,12 +1,24 @@
 package com.tpi.logistica.servicio_camiones.controllers;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.tpi.logistica.servicio_camiones.dtos.CamionDTO;
+import com.tpi.logistica.servicio-camiones.services.CamionService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/camiones")
 public class CamionController {
+
+    private final CamionService camionService;
+
+    public CamionController(CamionService camionService) {
+        this.camionService = camionService;
+    }
 
     @GetMapping("/ping")
     public Map<String, String> ping() {
@@ -16,11 +28,30 @@ public class CamionController {
         return respuesta;
     }
 
-    @GetMapping("/api/v1/camiones/")
-    public Map<String, String> listCamiones() {
-        Map<String, String> respuesta = new HashMap<>();
-        respuesta.put("status", "success");
-        respuesta.put("mensaje", "Listado de camiones");
-        return respuesta;
+    @GetMapping
+    public List<CamionDTO> getAll() {
+        return camionService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public CamionDTO getById(@PathVariable int id) {
+        return camionService.getById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<CamionDTO> create(@RequestBody CamionDTO dto) {
+        CamionDTO creado = camionService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+    }
+
+    @PutMapping("/{id}")
+    public CamionDTO update(@PathVariable int id, @RequestBody CamionDTO dto) {
+        return camionService.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) {
+        camionService.delete(id);
     }
 }

@@ -8,11 +8,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
     @Bean
-    public OpenAPI apiInfo() {
+    public OpenAPI openAPI() {
         return new OpenAPI().info(
                 new Info()
                         .title("Servicio Tarifas API")
-                        .description("Microservicio de gestión de tarifas del sistema logístico")
+                        .description("API del Microservicio de Tarifas")
                         .version("1.0.0")
         );
     }

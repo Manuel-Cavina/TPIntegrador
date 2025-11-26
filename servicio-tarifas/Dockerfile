@@ -1,21 +1,19 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Etapa 1: Build con Maven
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 
 WORKDIR /app
 
 COPY pom.xml .
-
-RUN mvn dependency:go-offline
+RUN mvn -q dependency:go-offline
 
 COPY src ./src
+RUN mvn -q -DskipTests package
 
-RUN mvn package -DskipTests
+FROM eclipse-temurin:17-jre
+WORKDIR /app
 
-FROM eclipse-temurin:17-jre-alpine
-
-ARG JAR_FILE=/app/target/*.jar
-
-COPY --from=build ${JAR_FILE} app.jar
+COPY --from=build /app/target/servicio-tarifas-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8086
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
