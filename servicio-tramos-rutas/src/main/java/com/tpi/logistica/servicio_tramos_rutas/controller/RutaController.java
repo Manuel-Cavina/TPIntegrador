@@ -1,10 +1,7 @@
 package com.tpi.logistica.servicio_tramos_rutas.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.tpi.logistica.servicio_tramos_rutas.dtos.RutaAsignarRequest;
 import com.tpi.logistica.servicio_tramos_rutas.dtos.RutaResponse;
@@ -22,5 +19,37 @@ public class RutaController {
     @PostMapping("/asignar")
     public ResponseEntity<RutaResponse> asignarRuta(@RequestBody RutaAsignarRequest request) {
         return ResponseEntity.ok(rutaService.asignarRuta(request));
+    }
+
+    @GetMapping("/{solicitudId}")
+public ResponseEntity<?> obtenerRuta(@PathVariable Integer solicitudId) {
+    return ResponseEntity.ok(rutaService.obtenerRutaCompleta(solicitudId));
+}
+
+
+    @GetMapping
+    public ResponseEntity<?> listarRutas() {
+        return ResponseEntity.ok(rutaService.listarRutas());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminarRuta(@PathVariable Integer id) {
+        rutaService.eliminarRuta(id);
+        return ResponseEntity.ok("Ruta eliminada correctamente");
+    }
+
+    @PutMapping("/tramos/{id}/iniciar")
+    public ResponseEntity<?> iniciarTramo(@PathVariable Integer id) {
+        return ResponseEntity.ok(rutaService.iniciarTramo(id));
+    }
+
+    @PutMapping("/tramos/{id}/finalizar")
+    public ResponseEntity<?> finalizarTramo(@PathVariable Integer id) {
+        return ResponseEntity.ok(rutaService.finalizarTramo(id));
+    }
+
+    @GetMapping("/tramos/estado/{estadoId}")
+    public ResponseEntity<?> obtenerPorEstado(@PathVariable Integer estadoId) {
+        return ResponseEntity.ok(rutaService.obtenerTramosPorEstado(estadoId));
     }
 }
