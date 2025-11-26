@@ -1,4 +1,4 @@
-package com.tpi.logistica.servicio_solicitudes.controllers;
+package com.tpi.logistica.servicio_solicitudes.controller;
 
 import com.tpi.logistica.servicio_solicitudes.dtos.SolicitudDTO;
 import com.tpi.logistica.servicio_solicitudes.services.SolicitudService;

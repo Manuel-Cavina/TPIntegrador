@@ -9,46 +9,57 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GatewayConfig {
 
-    @Bean
-    public RouteLocator configurarRutas(RouteLocatorBuilder builder,
-                                        @Value("${logistica-gateway.url-camiones}") String camionesUri,
-                                        @Value("${logistica-gateway.url-contenedores}") String contenedoresUri,
-                                        @Value("${logistica-gateway.url-solicitudes}") String solicitudesUri,
-                                        @Value("${logistica-gateway.url-tarifas}") String tarifasUri,
-                                        @Value("${logistica-gateway.url-rutas}") String rutasUri,
-                                        @Value("${logistica-gateway.url-usuarios}") String usuariosUri,
-                                        @Value("${logistica-gateway.url-maps}") String mapsUri,
-                                        @Value("${internal.token}") String internalToken) {
+        @Bean
+        public RouteLocator configurarRutas(RouteLocatorBuilder builder,
+                        @Value("${logisticaGateway.urlCamiones}") String camionesUri,
+                        @Value("${logisticaGateway.urlContenedores}") String contenedoresUri,
+                        @Value("${logisticaGateway.urlSolicitudes}") String solicitudesUri,
+                        @Value("${logisticaGateway.urlTarifas}") String tarifasUri,
+                        @Value("${logisticaGateway.urlRutas}") String rutasUri,
+                        @Value("${logisticaGateway.urlUsuarios}") String usuariosUri,
+                        @Value("${logisticaGateway.urlMaps}") String mapsUri,
+                        @Value("${internal.token}") String internalToken) {
 
-        return builder.routes()
-                .route(p -> p.path("/api/v1/camiones/**")
-                        .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
-                        .uri(camionesUri))
+                return builder.routes()
+                                .route(p -> p.path("/api/v1/camiones/**")
+                                                .filters(f -> f.stripPrefix(2).addRequestHeader("X-Internal-Token",
+                                                                internalToken))
+                                                .uri(camionesUri))
 
-                .route(p -> p.path("/api/v1/contenedores/**")
-                        .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
-                        .uri(contenedoresUri))
+                                .route(p -> p.path("/api/v1/contenedores/**")
+                                                .filters(f -> f.stripPrefix(2).addRequestHeader("X-Internal-Token",
+                                                                internalToken))
+                                                .uri(contenedoresUri))
 
-                .route(p -> p.path("/api/v1/solicitudes/**")
-                        .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
-                        .uri(solicitudesUri))
+                                .route(p -> p.path("/api/v1/solicitudes/**")
+                                                .filters(f -> f.stripPrefix(2).addRequestHeader("X-Internal-Token",
+                                                                internalToken))
+                                                .uri(solicitudesUri))
 
-                .route(p -> p.path("/api/v1/tarifas/**")
-                        .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
-                        .uri(tarifasUri))
+                                .route(p -> p.path("/api/v1/tarifas/**")
+                                                .filters(f -> f.stripPrefix(2).addRequestHeader("X-Internal-Token",
+                                                                internalToken))
+                                                .uri(tarifasUri))
 
-                .route(p -> p.path("/api/v1/rutas/**", "/api/v1/tramos/**")
-                        .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
-                        .uri(rutasUri))
+                                .route(p -> p.path("/api/v1/rutas/**")
+                                                .filters(f -> f.stripPrefix(2).addRequestHeader("X-Internal-Token",
+                                                                internalToken))
+                                                .uri(rutasUri))
+                                .route(p -> p.path("/api/v1/tramos/**")
+                                                .filters(f -> f.stripPrefix(2).addRequestHeader("X-Internal-Token",
+                                                                internalToken))
+                                                .uri(rutasUri))
 
-                .route(p -> p.path("/api/v1/usuarios/**")
-                        .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
-                        .uri(usuariosUri))
+                                .route(p -> p.path("/api/v1/usuarios/**")
+                                                .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
+                                                .uri(usuariosUri))
 
-                .route(p -> p.path("/api/v1/maps/**")
-                        .filters(f -> f.addRequestHeader("X-Internal-Token", internalToken))
-                        .uri(mapsUri))
-                .build();
-    }
+                                .route(p -> p.path("/api/v1/maps/**")
+                                                .filters(f -> f.rewritePath("/api/v1/maps/(?<segment>.*)",
+                                                                "/geo/${segment}")
+                                                                .addRequestHeader("X-Internal-Token", internalToken))
+                                                .uri(mapsUri))
+                                .build();
+        }
 
 }

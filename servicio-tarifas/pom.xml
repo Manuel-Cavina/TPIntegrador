@@ -11,7 +11,6 @@
         <relativePath/>
     </parent>
 
-
     <groupId>com.tpi.logistica</groupId>
     <artifactId>servicio-tarifas</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -54,13 +53,12 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Test (si querés) -->
+        <!-- Test-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-<<<<<<< HEAD
 
         <!-- Seguridad con OAuth2 -->
         <dependency>
@@ -71,6 +69,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+    
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
         </dependency>
 
         <!-- Hibernate Validator -->
@@ -86,8 +89,6 @@
             <version>4.0.2</version>
         </dependency>
 
-=======
->>>>>>> main
     </dependencies>
 
     <build>

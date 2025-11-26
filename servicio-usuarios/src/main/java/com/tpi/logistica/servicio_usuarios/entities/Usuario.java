@@ -36,7 +36,7 @@ public class Usuario {
     private String telefono;
 
     @Column(nullable = false, length = 30)
-    private String rol;  // "cliente", "chofer", "admin"
+    private String rol;
 
     @Column(nullable = false)
     private boolean activo = true;

@@ -8,7 +8,7 @@ spring:
         jwt:
           issuer-uri: http://keycloak:8080/realms/logistica
   datasource:
-    url: jdbc:postgresql://localhost:5432/db_tarifas?options=-c%20TimeZone=America/Argentina/Buenos_Aires
+    url: jdbc:postgresql://db_tarifas:5432/db_tarifas?options=-c%20TimeZone=America/Argentina/Buenos_Aires
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

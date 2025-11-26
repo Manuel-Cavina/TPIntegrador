@@ -1,4 +1,4 @@
-package com.tpi.logistica.servicio_tarifas.controllers;
+package com.tpi.logistica.servicio_tarifas.controller;
 
 import com.tpi.logistica.servicio_tarifas.dtos.TarifaDTO;
 import com.tpi.logistica.servicio_tarifas.services.TarifaService;

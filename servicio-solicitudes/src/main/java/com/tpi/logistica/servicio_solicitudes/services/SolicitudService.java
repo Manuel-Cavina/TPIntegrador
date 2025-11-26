@@ -30,8 +30,7 @@ public class SolicitudService {
         Solicitud s = solicitudRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "No se encontró la solicitud con id " + id
-                ));
+                        "No se encontró la solicitud con id " + id));
         return SolicitudDTO.toDto(s);
     }
 
@@ -46,8 +45,7 @@ public class SolicitudService {
         Solicitud existente = solicitudRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
-                        "No se encontró la solicitud con id " + id
-                ));
+                        "No se encontró la solicitud con id " + id));
 
         existente.setNroSolicitud(dto.getNroSolicitud());
         existente.setContenedorId(dto.getContenedorId());
@@ -78,12 +76,10 @@ public class SolicitudService {
         if (!solicitudRepository.existsById(id)) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "No se encontró la solicitud con id " + id
-            );
+                    "No se encontró la solicitud con id " + id);
         }
         solicitudRepository.deleteById(id);
     }
-
 
     private Solicitud fromDto(SolicitudDTO dto) {
         Solicitud s = new Solicitud();

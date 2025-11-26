@@ -1,7 +1,7 @@
 package com.tpi.logistica.servicio_camiones.controllers;
 
 import com.tpi.logistica.servicio_camiones.dtos.CamionDTO;
-import com.tpi.logistica.servicio-camiones.services.CamionService;
+import com.tpi.logistica.servicio_camiones.services.CamionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

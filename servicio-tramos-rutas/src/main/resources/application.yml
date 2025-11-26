@@ -11,8 +11,7 @@ spring:
     name: servicio-tramos-rutas
 
   datasource:
-    url: jdbc:postgresql://localhost:5439/db_tramos_rutas?TimeZone=UTC
-
+    url: jdbc:postgresql://db_tramos_rutas:5432/db_tramos_rutas?TimeZone=UTC
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver

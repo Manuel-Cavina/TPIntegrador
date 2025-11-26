@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class UsuarioDTO {
-
     private int id;
     private String nombre;
     private String apellido;
@@ -16,31 +15,31 @@ public class UsuarioDTO {
     private String fechaCreacion;
     private String fechaActualizacion;
 
-    public UsuarioDTO(int id, String nombre, String apellido, String email,
-                      String telefono, String rol, boolean activo,
-                      String fechaCreacion, String fechaActualizacion) {
-        this.id = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.telefono = telefono;
-        this.rol = rol;
-        this.activo = activo;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaActualizacion = fechaActualizacion;
+    public static UsuarioDTO toDto(Usuario u) {
+        if (u == null) return null;
+        UsuarioDTO d = new UsuarioDTO();
+        d.id = u.getId();
+        d.nombre = u.getNombre();
+        d.apellido = u.getApellido();
+        d.email = u.getEmail();
+        d.telefono = u.getTelefono();
+        d.rol = u.getRol();
+        d.activo = u.isActivo();
+        d.fechaCreacion = u.getFechaCreacion() != null ? u.getFechaCreacion().toString() : null;
+        d.fechaActualizacion = u.getFechaActualizacion() != null ? u.getFechaActualizacion().toString() : null;
+        return d;
     }
 
-    public static UsuarioDTO toDto(Usuario u) {
-        return new UsuarioDTO(
-                u.getId(),
-                u.getNombre(),
-                u.getApellido(),
-                u.getEmail(),
-                u.getTelefono(),
-                u.getRol(),
-                u.isActivo(),
-                u.getFechaCreacion() != null ? u.getFechaCreacion().toString() : null,
-                u.getFechaActualizacion() != null ? u.getFechaActualizacion().toString() : null
-        );
+    public static Usuario toEntity(UsuarioDTO d) {
+        if (d == null) return null;
+        Usuario u = new Usuario();
+        u.setId(d.getId());
+        u.setNombre(d.getNombre());
+        u.setApellido(d.getApellido());
+        u.setEmail(d.getEmail());
+        u.setTelefono(d.getTelefono());
+        u.setRol(d.getRol());
+        u.setActivo(d.isActivo());
+        return u;
     }
 }
