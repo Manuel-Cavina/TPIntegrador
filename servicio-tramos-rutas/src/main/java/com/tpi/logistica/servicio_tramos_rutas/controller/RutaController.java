@@ -10,7 +10,7 @@ import com.tpi.logistica.servicio_tramos_rutas.services.RutaService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/rutas")
+@RequestMapping("/api/v1/rutas")
 @RequiredArgsConstructor
 public class RutaController {
 

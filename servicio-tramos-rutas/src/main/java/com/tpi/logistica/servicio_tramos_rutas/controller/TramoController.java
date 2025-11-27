@@ -16,7 +16,7 @@ import com.tpi.logistica.servicio_tramos_rutas.repositories.TramoRepository;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/tramos")
+@RequestMapping("/api/v1/tramos")
 @RequiredArgsConstructor
 public class TramoController {
 

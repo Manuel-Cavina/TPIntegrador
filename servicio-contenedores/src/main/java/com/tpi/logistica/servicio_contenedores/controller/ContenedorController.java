@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/contenedores")
+@RequestMapping("/api/v1/contenedores")
 public class ContenedorController {
 
     private final ContenedorService service;
